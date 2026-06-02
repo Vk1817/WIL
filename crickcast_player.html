@@ -1,0 +1,156 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Prime By Cricket Yoddha</title>     
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
+  <style>  
+   * { margin: 0; padding: 0; box-sizing: border-box; }  
+    html, body {  
+      background: #000;  
+      height: 100vh;  
+      width: 100vw;  
+      overflow: hidden;  
+      font-family: system-ui, -apple-system, sans-serif;  
+    }  
+    .shaka-video-container {  
+      position: absolute;  
+      inset: 0;  
+      width: 100%;  
+      height: 100%;  
+    }  
+    video {  
+      width: 100%;  
+      height: 100%;  
+      background: #000;  
+      object-fit: contain;  
+    }  
+    /* Shaka Spinner Hiding */
+    .shaka-spinner-container,  
+    .shaka-spinner,  
+    .shaka-spinner-svg {  
+      display: none !important;  
+      visibility: hidden !important;  
+      opacity: 0 !important;  
+    }
+
+    /* CRICKCAST Watermark */
+    .watermark {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      z-index: 100;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 4px;
+      padding: 3px 8px 3px 6px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .watermark-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00e5ff;
+      animation: pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    .watermark-text {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #00e5ff;
+      text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+  </style>  
+</head>  
+<body>  
+  <div class="shaka-video-container" data-shaka-player>  
+    <video autoplay muted playsinline preload="metadata" poster="https://i.ibb.co/nMBMq5qL/20260602-220931.jpg"></video>
+
+    <!-- CRICKCAST Watermark -->
+    <div class="watermark">
+      <div class="watermark-dot"></div>
+      <span class="watermark-text">CRICKCAST</span>
+    </div>
+  </div>  
+  
+  <script>  
+    document.addEventListener('DOMContentLoaded', async () => {  
+      shaka.polyfill.installAll();  
+  
+      if (!shaka.Player.isBrowserSupported()) {  
+        console.error('Browser not supported');  
+        return;  
+      }  
+  
+      const video = document.querySelector('video');  
+      const player = new shaka.Player();  
+      await player.attach(video);  
+  
+      const container = document.querySelector('.shaka-video-container');  
+      const ui = new shaka.ui.Overlay(player, container, video);  
+  
+      ui.configure({  
+        controlPanelElements: [  
+          'play_pause', 'time_and_duration', 'mute', 'volume',  
+          'spacer', 'language', 'captions', 'picture_in_picture',  
+          'quality', 'fullscreen'  
+        ],  
+        volumeBarColors: {  
+          base: 'rgba(255, 192, 203, 0.3)',  
+          level: 'rgb(255, 105, 180)'
+        },  
+        seekBarColors: {  
+          base: 'rgba(255, 255, 0, 0.3)',  
+          buffered: 'rgba(255, 255, 0, 0.6)',  
+          played: 'rgb(255, 255, 0)'  
+        }  
+      });  
+  
+      let drmConfig = {  
+        clearKeys: {  
+          "56816fa6c2b3fa65a5de766d52f08b7f": "07c1b41782e4321883a06b73629200a0"  
+        }  
+      };  
+  
+      let streamUrl = "https://otte.cache.aiv-cdn.net/iad-nitro/live/clients/dash/enc/kr46ndje4l/out/v1/9833c1deedb64791b99615a4aefefb66/cenc.mpd";  
+  
+      player.configure({  
+        drm: drmConfig,  
+        streaming: {  
+          lowLatencyMode: true,  
+          bufferingGoal: 10,  
+          rebufferingGoal: 2,  
+          retryParameters: {  
+            timeout: 10000,  
+            maxAttempts: 5  
+          }  
+        }  
+      });  
+  
+      player.addEventListener('error', (event) => {  
+        console.error('Shaka Player Error:', event.detail);  
+      });  
+  
+      try {  
+        await player.load(streamUrl);  
+        console.log("Stream loaded successfully");  
+      } catch (error) {  
+        console.error('Load error:', error);  
+      }  
+    });  
+  </script>  
+</body>  
+</html>
