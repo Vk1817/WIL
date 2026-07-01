@@ -1,181 +1,190 @@
- <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ten 3 HD</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body {
-            background: #000;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-        .shaka-video-container {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-        }
-        video {
-            width: 100%;
-            height: 100%;
-            background: #000;
-            object-fit: contain;
-        }
-        .shaka-spinner-container,
-        .shaka-spinner,
-        .shaka-spinner-svg {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-        }
-        /* CRICKCAST Watermark */
-        .watermark {
-            position: absolute;
-            top: 14px;
-            right: 16px;
-            z-index: 100;
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(0, 229, 255, 0.25);
-            border-radius: 4px;
-            padding: 3px 8px 3px 6px;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-        }
-        .watermark-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #00e5ff;
-            animation: pulse 2s ease-in-out infinite;
-            flex-shrink: 0;
-        }
-        .watermark-text {
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            color: #00e5ff;
-            text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-    </style>
+  <title>Fox Cricket</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <meta name="referrer" content="no-referrer"/>
+
+  <!-- Plyr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css"/>
+
+  <!-- HLS.js -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+  <!-- Plyr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .plyr {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="shaka-video-container" data-shaka-player>
-        <video autoplay playsinline preload="metadata" poster="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgwIiBoZWlnaHQ9IjcyMCIgdmlld0JveD0iMCAwIDEyODAgNzIwIj4KICA8ZGVmcz4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0iYmciIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjcwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMDFhMmUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDAwMDAwIi8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogICAgPGZpbHRlciBpZD0iZ2xvdyI+CiAgICAgIDxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjgiIHJlc3VsdD0iYmx1ciIvPgogICAgICA8ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49ImJsdXIiLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEyODAiIGhlaWdodD0iNzIwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxnIHN0cm9rZT0iIzAwZTVmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuMDQiIHN0cm9rZS13aWR0aD0iMSI+CiAgICA8bGluZSB4MT0iMCIgeTE9IjE4MCIgeDI9IjEyODAiIHkyPSIxODAiLz4KICAgIDxsaW5lIHgxPSIwIiB5MT0iMzYwIiB4Mj0iMTI4MCIgeTI9IjM2MCIvPgogICAgPGxpbmUgeDE9IjAiIHkxPSI1NDAiIHgyPSIxMjgwIiB5Mj0iNTQwIi8+CiAgICA8bGluZSB4MT0iMzIwIiB5MT0iMCIgeDI9IjMyMCIgeTI9IjcyMCIvPgogICAgPGxpbmUgeDE9IjY0MCIgeTE9IjAiIHgyPSI2NDAiIHkyPSI3MjAiLz4KICAgIDxsaW5lIHgxPSI5NjAiIHkxPSIwIiB4Mj0iOTYwIiB5Mj0iNzIwIi8+CiAgPC9nPgogIDxjaXJjbGUgY3g9IjY0MCIgY3k9IjMxMCIgcj0iMjAwIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMGU1ZmYiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLW9wYWNpdHk9IjAuMTIiLz4KICA8Y2lyY2xlIGN4PSI2NDAiIGN5PSIzMTAiIHI9IjE2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBlNWZmIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1vcGFjaXR5PSIwLjA4Ii8+CiAgPGNpcmNsZSBjeD0iNjQwIiBjeT0iMzEwIiByPSI3MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBlNWZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLW9wYWNpdHk9IjAuNiIgZmlsdGVyPSJ1cmwoI2dsb3cpIi8+CiAgPHBhdGggZD0iTSA1OTAgMjcwIFEgNjQwIDMxMCA1OTAgMzUwIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMGU1ZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIvPgogIDxwYXRoIGQ9Ik0gNjkwIDI3MCBRIDY0MCAzMTAgNjkwIDM1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBlNWZmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1vcGFjaXR5PSIwLjUiLz4KICA8dGV4dCB4PSI2NDAiIHk9IjQ0OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIKICAgIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIEFyaWFsLCBzYW5zLXNlcmlmIgogICAgZm9udC1zaXplPSI4OCIgZm9udC13ZWlnaHQ9IjgwMCIgbGV0dGVyLXNwYWNpbmc9IjEyIgogICAgZmlsbD0iIzAwZTVmZiIgZmlsdGVyPSJ1cmwoI2dsb3cpIiBvcGFjaXR5PSIwLjk1Ij5DUklDS0NBU1Q8L3RleHQ+CiAgPHRleHQgeD0iNjQwIiB5PSI0OTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiCiAgICBmb250LWZhbWlseT0ic3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBBcmlhbCwgc2Fucy1zZXJpZiIKICAgIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI0MDAiIGxldHRlci1zcGFjaW5nPSI2IgogICAgZmlsbD0iIzAwZTVmZiIgb3BhY2l0eT0iMC40NSI+TElWRSBDUklDS0VUIFNUUkVBTUlORzwvdGV4dD4KICA8bGluZSB4MT0iNDgwIiB5MT0iNTIwIiB4Mj0iODAwIiB5Mj0iNTIwIiBzdHJva2U9IiMwMGU1ZmYiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLW9wYWNpdHk9IjAuMyIvPgogIDxjaXJjbGUgY3g9IjYwOCIgY3k9IjU0OCIgcj0iNSIgZmlsbD0iI2ZmM2IzYiIgb3BhY2l0eT0iMC45Ii8+CiAgPHRleHQgeD0iNjIwIiB5PSI1NTMiIHRleHQtYW5jaG9yPSJzdGFydCIKICAgIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIEFyaWFsLCBzYW5zLXNlcmlmIgogICAgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9IjYwMCIgbGV0dGVyLXNwYWNpbmc9IjMiCiAgICBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjUiPkxJVkU8L3RleHQ+Cjwvc3ZnPg=="></video>
 
-        <!-- CRICKCAST Watermark -->
-        <div class="watermark">
-            <div class="watermark-dot"></div>
-            <span class="watermark-text">CRICKCAST</span>
-        </div>
-    </div>
+<div class="video-container">
+  <video
+    id="player"
+    controls
+    autoplay
+    muted
+    playsinline
+    preload="metadata">
+  </video>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            shaka.polyfill.installAll();
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
-            if (!shaka.Player.isBrowserSupported()) {
-                console.error('Browser not supported');
-                return;
-            }
+    const video = document.getElementById("player");
 
-            const video = document.querySelector('video');
-            const player = new shaka.Player();
-            await player.attach(video);
+    const source =
+    "https://amg01269-amg01269c1-sportstribal-emea-5204.playouts.now.amagi.tv/playlist/amg01269-willowtvfast-willowplus-sportstribalemea/playlist.m3u8";
 
-            const container = document.querySelector('.shaka-video-container');
-            const ui = new shaka.ui.Overlay(player, container, video);
+    const defaultOptions = {
+        autoplay: true,
+        controls: [
+            "play",
+            "rewind",
+            "fast-forward",
+            "progress",
+            "current-time",
+            "mute",
+            "volume",
+            "settings",
+            "fullscreen"
+        ],
+        settings: ["quality"]
+    };
 
-            ui.configure({
-                controlPanelElements: [
-                    'play_pause', 'time_and_duration', 'mute', 'volume',
-                    'spacer', 'language', 'captions', 'picture_in_picture',
-                    'quality', 'fullscreen'
-                ],
-                volumeBarColors: { base: 'purple', level: 'purple' },
-                seekBarColors: { base: 'white', buffered: 'red', played: 'blue' }
-            });
+    let player;
 
-            let streamUrl = "https://jiotvmblive.cdn.jio.com/bpk-tv/Ten3_HD_MOB/WDVLive/index.mpd?__hdnea__=st=1781148822~exp=1781170422~acl=/*~hmac=a380c159be35875145c0a95039388343c04b38d0ef43612622da03b2241f5f01";
-            let drmConfig = {
-                clearKeys: {
-                    "111e6908b965566e97139efddf7ef459": "c87903abbc052e1f21e51ebd928d9cb1"
-                }
-            };
+    function setupPlayer(hls, qualities = []) {
 
-            let cookieHeader = "__hdnea__=st=1781148822~exp=1781170422~acl=/*~hmac=a380c159be35875145c0a95039388343c04b38d0ef43612622da03b2241f5f01";
+        player = new Plyr(video, {
+            ...defaultOptions,
 
-            player.configure({
-                drm: drmConfig,
-                streaming: {
-                    lowLatencyMode: true,
-                    bufferingGoal: 15,
-                    rebufferingGoal: 2,
-                    bufferBehind: 15,
-                    retryParameters: {
-                        timeout: 10000,
-                        maxAttempts: 5,
-                        baseDelay: 300,
-                        backoffFactor: 1.2
+            ...(qualities.length
+                ? {
+                    quality: {
+                        default: qualities[0],
+                        options: qualities,
+                        forced: true,
+                        onChange: quality => {
+                            hls.levels.forEach((level, index) => {
+                                if (level.height === quality) {
+                                    hls.currentLevel = index;
+                                }
+                            });
+                        }
                     }
                 }
-            });
+                : {})
+        });
 
-            player.getNetworkingEngine().registerRequestFilter((type, request) => {
-                request.headers['Referer'] = 'https://www.jiotv.com/';
-                request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
-                request.headers['Cookie'] = cookieHeader;
+        // Auto Resume
+        setInterval(() => {
+            if (video.paused && video.readyState > 2) {
+                video.play().catch(() => {});
+            }
+        }, 3000);
 
-                if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST ||
-                     type === shaka.net.NetworkingEngine.RequestType.SEGMENT) &&
-                    request.uris[0] && !request.uris[0].includes('__hdnea=')) {
-                    const separator = request.uris[0].includes('?') ? '&' : '?';
-                    request.uris[0] += separator + cookieHeader;
+        // Auto Unmute after first interaction
+        const unmute = () => {
+            video.muted = false;
+            video.volume = 1;
+
+            document.removeEventListener("click", unmute);
+            document.removeEventListener("touchstart", unmute);
+        };
+
+        document.addEventListener("click", unmute);
+        document.addEventListener("touchstart", unmute);
+    }
+
+    if (Hls.isSupported()) {
+
+        const hls = new Hls({
+            autoStartLoad: true
+        });
+
+        hls.loadSource(source);
+        hls.attachMedia(video);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, (_, data) => {
+
+            const qualities = data.levels
+                .map(level => level.height)
+                .sort((a, b) => b - a);
+
+            video.play().catch(() => {});
+            setupPlayer(hls, qualities);
+
+        });
+
+        hls.on(Hls.Events.ERROR, (_, data) => {
+
+            if (data.fatal) {
+
+                switch (data.type) {
+
+                    case Hls.ErrorTypes.NETWORK_ERROR:
+                        hls.startLoad();
+                        break;
+
+                    case Hls.ErrorTypes.MEDIA_ERROR:
+                        hls.recoverMediaError();
+                        break;
+
+                    default:
+                        hls.destroy();
+                        break;
                 }
-            });
-
-            const attemptAutoplay = async () => {
-                try {
-                    video.muted = false;
-                    await video.play();
-                } catch (error) {
-                    video.muted = true;
-                    await video.play();
-                }
-            };
-
-            player.addEventListener('error', (event) => console.error('Shaka Player Error:', event.detail));
-
-            try {
-                await player.load(streamUrl);
-                if (video.readyState >= 3) {
-                    await attemptAutoplay();
-                } else {
-                    video.addEventListener('canplay', attemptAutoplay, { once: true });
-                }
-            } catch (error) {
-                console.error('Load error:', error);
             }
 
-            // Unmute on first interaction
-            ['click', 'touchstart'].forEach(event => {
-                document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
-            });
         });
-    </script>
+
+    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+
+        video.src = source;
+
+        video.addEventListener("loadedmetadata", () => {
+            video.play().catch(() => {});
+            setupPlayer(null);
+        });
+
+    }
+
+});
+</script>
+
 </body>
 </html>
