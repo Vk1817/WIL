@@ -22,48 +22,19 @@ video.mode-cover{object-fit:cover}
 #loader.on{opacity:1}
 .spin{width:36px;height:36px;border:3px solid rgba(255,255,255,.15);border-top-color:#38bdf8;border-radius:50%;animation:sp .75s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-
-/* Pill Watermark */
-.watermark{
-  position:absolute;
-  top:14px;
-  right:16px;
-  z-index:100;
-  pointer-events:none;
-  display:flex;
-  align-items:center;
-  gap:5px;
-  background:rgba(0,0,0,0.35);
-  border:1px solid rgba(0,229,255,0.25);
-  border-radius:4px;
-  padding:3px 8px 3px 6px;
-  backdrop-filter:blur(4px);
-  -webkit-backdrop-filter:blur(4px);
-}
-.watermark-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:#00e5ff;
-  animation:pulse 2s ease-in-out infinite;
-  flex-shrink:0;
-}
-.watermark-text{
-  font-family:system-ui,-apple-system,sans-serif;
-  font-size:11px;font-weight:700;letter-spacing:1.5px;
-  color:#00e5ff;
-  text-shadow:0 0 8px rgba(0,229,255,0.4);
-}
+.watermark{position:absolute;top:14px;right:16px;z-index:100;pointer-events:none;display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.35);border:1px solid rgba(0,229,255,0.25);border-radius:4px;padding:3px 8px 3px 6px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.watermark-dot{width:6px;height:6px;border-radius:50%;background:#00e5ff;animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+.watermark-text{font-family:system-ui,-apple-system,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:#00e5ff;text-shadow:0 0 8px rgba(0,229,255,0.4)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 @media(max-width:700px){.watermark{top:8px;right:8px}.watermark-text{font-size:10px}}
 </style>
 </head>
 <body>
-
 <div class="shaka-video-container" id="pc">
   <video id="v" autoplay playsinline preload="metadata" poster="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgwIiBoZWlnaHQ9IjcyMCIgdmlld0JveD0iMCAwIDEyODAgNzIwIj4KICA8ZGVmcz4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0iYmciIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjcwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMDFhMmUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDAwMDAwIi8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogICAgPGZpbHRlciBpZD0iZ2xvdyI+CiAgICAgIDxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjgiIHJlc3VsdD0iYmx1ciIvPgogICAgICA8ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49ImJsdXIiLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEyODAiIGhlaWdodD0iNzIwIiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxnIHN0cm9rZT0iIzAwZTVmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuMDQiIHN0cm9rZS13aWR0aD0iMSI+CiAgICA8bGluZSB4MT0iMCIgeTE9IjE4MCIgeDI9IjEyODAiIHkyPSIxODAiLz4KICAgIDxsaW5lIHgxPSIwIiB5MT0iMzYwIiB4Mj0iMTI4MCIgeTI9IjM2MCIvPgogICAgPGxpbmUgeDE9IjAiIHkxPSI1NDAiIHgyPSIxMjgwIiB5Mj0iNTQwIi8+CiAgICA8bGluZSB4MT0iMzIwIiB5MT0iMCIgeDI9IjMyMCIgeTI9IjcyMCIvPgogICAgPGxpbmUgeDE9IjY0MCIgeTE9IjAiIHgyPSI2NDAiIHkyPSI3MjAiLz4KICAgIDxsaW5lIHgxPSI5NjAiIHkxPSIwIiB4Mj0iOTYwIiB5Mj0iNzIwIi8+CiAgPC9nPgogIDxjaXJjbGUgY3g9IjY0MCIgY3k9IjMxMCIgcj0iMjAwIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMGU1ZmYiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLW9wYWNpdHk9IjAuMTIiLz4KICA8Y2lyY2xlIGN4PSI2NDAiIGN5PSIzMTAiIHI9IjE2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBlNWZmIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1vcGFjaXR5PSIwLjA4Ii8+CiAgPGNpcmNsZSBjeD0iNjQwIiBjeT0iMzEwIiByPSI3MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBlNWZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLW9wYWNpdHk9IjAuNiIgZmlsdGVyPSJ1cmwoI2dsb3cpIi8+CiAgPHBhdGggZD0iTSA1OTAgMjcwIFEgNjQwIDMxMCA1OTAgMzUwIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMGU1ZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLW9wYWNpdHk9IjAuNSIvPgogIDxwYXRoIGQ9Ik0gNjkwIDI3MCBRIDY0MCAzMTAgNjkwIDM1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBlNWZmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1vcGFjaXR5PSIwLjUiLz4KICA8dGV4dCB4PSI2NDAiIHk9IjQ0OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIKICAgIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIEFyaWFsLCBzYW5zLXNlcmlmIgogICAgZm9udC1zaXplPSI4OCIgZm9udC13ZWlnaHQ9IjgwMCIgbGV0dGVyLXNwYWNpbmc9IjEyIgogICAgZmlsbD0iIzAwZTVmZiIgZmlsdGVyPSJ1cmwoI2dsb3cpIiBvcGFjaXR5PSIwLjk1Ij5DUklDS0NBU1Q8L3RleHQ+CiAgPHRleHQgeD0iNjQwIiB5PSI0OTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiCiAgICBmb250LWZhbWlseT0ic3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBBcmlhbCwgc2Fucy1zZXJpZiIKICAgIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI0MDAiIGxldHRlci1zcGFjaW5nPSI2IgogICAgZmlsbD0iIzAwZTVmZiIgb3BhY2l0eT0iMC40NSI+TElWRSBDUklDS0VUIFNUUkVBTUlORzwvdGV4dD4KICA8bGluZSB4MT0iNDgwIiB5MT0iNTIwIiB4Mj0iODAwIiB5Mj0iNTIwIiBzdHJva2U9IiMwMGU1ZmYiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLW9wYWNpdHk9IjAuMyIvPgogIDxjaXJjbGUgY3g9IjYwOCIgY3k9IjU0OCIgcj0iNSIgZmlsbD0iI2ZmM2IzYiIgb3BhY2l0eT0iMC45Ii8+CiAgPHRleHQgeD0iNjIwIiB5PSI1NTMiIHRleHQtYW5jaG9yPSJzdGFydCIKICAgIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIEFyaWFsLCBzYW5zLXNlcmlmIgogICAgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9IjYwMCIgbGV0dGVyLXNwYWNpbmc9IjMiCiAgICBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjUiPkxJVkU8L3RleHQ+Cjwvc3ZnPg=="></video>
   <div id="loader"><div class="spin"></div></div>
   <div class="watermark"><div class="watermark-dot"></div><span class="watermark-text">CRICKCAST</span></div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/shaka-player@5.1.8/dist/shaka-player.ui.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
@@ -96,8 +67,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     fadeDelay: 3
   });
 
-  const STREAM_URL = 'https://a96aivottlinear-a.akamaihd.net/OTTB/iad-nitro/enc/tofjtc2tfm/out/v1/237ce4699bb443f2bb71ea3b33845d83/cenc.mpd';
-  const RAW_KEYS = 'cf78ec80b0f9aed60fc6a338dd34c2aa:886602ae8eeed61e39c85b625d15211f';
+  const STREAM_URL = 'https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/3ehx5oie11/out/v1/8e1d4ff75c7e4e88a5bf9984431ef804/cenc.mpd';
+  const RAW_KEYS = '63ff5bd50a863114f9d5fe0d18aff544:319760d139c5af680bab44664fd833ad';
   const clearKeys = Object.fromEntries(
     RAW_KEYS.split(',').map(pair => pair.trim().split(':'))
   );
